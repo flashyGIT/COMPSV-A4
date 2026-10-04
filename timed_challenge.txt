@@ -3,6 +3,105 @@ Group 1: Ordered and Indexed
 Rotate the values in a collection to the right by k steps.
 Input: [1, 2, 3, 4, 5], k = 2
 Output: [4, 5, 1, 2, 3]
+"""
+Timed Challenge - Group 1: Ordered and Indexed
+Problem 1: Rotate Right
+
+Rotate the values in a collection to the right by k steps.
+
+Input:  [1, 2, 3, 4, 5], k = 2
+Output: [4, 5, 1, 2, 3]
+"""
+
+
+def rotate_right(values, k):
+    """
+    Rotate a list to the right by k positions.
+
+    Raises:
+        TypeError: If values is not a list or k is not an integer.
+        ValueError: If k is negative.
+    """
+    if not isinstance(values, list):
+        raise TypeError("values must be a list")
+
+    if not isinstance(k, int):
+        raise TypeError("k must be an integer")
+
+    if k < 0:
+        raise ValueError("k must be non-negative")
+
+    # An empty list is already rotated.
+    if not values:
+        return []
+
+    # Avoid unnecessary rotations when k is larger than the list.
+    k = k % len(values)
+
+    if k == 0:
+        return values.copy()
+
+    return values[-k:] + values[:-k]
+
+
+# ---------------------------------------------------------
+# Tests
+# ---------------------------------------------------------
+
+def run_tests():
+    # Normal cases
+    assert rotate_right([1, 2, 3, 4, 5], 2) == [4, 5, 1, 2, 3]
+    assert rotate_right([1, 2, 3, 4, 5], 1) == [5, 1, 2, 3, 4]
+    assert rotate_right([1, 2, 3, 4, 5], 5) == [1, 2, 3, 4, 5]
+
+    # k larger than the list length
+    assert rotate_right([1, 2, 3], 7) == [3, 1, 2]
+
+    # Empty list
+    assert rotate_right([], 3) == []
+
+    # Single-element list
+    assert rotate_right([10], 100) == [10]
+
+    # k = 0
+    assert rotate_right([1, 2, 3], 0) == [1, 2, 3]
+
+    # Duplicate values
+    assert rotate_right([1, 1, 2, 2], 2) == [2, 2, 1, 1]
+
+    # Wrong data types
+    try:
+        rotate_right("12345", 2)
+        assert False, "Expected TypeError for non-list input"
+    except TypeError:
+        pass
+
+    try:
+        rotate_right([1, 2, 3], "2")
+        assert False, "Expected TypeError for non-integer k"
+    except TypeError:
+        pass
+
+    # Negative k
+    try:
+        rotate_right([1, 2, 3], -1)
+        assert False, "Expected ValueError for negative k"
+    except ValueError:
+        pass
+
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    run_tests()   
+Reflection
+
+I chose a Python list for this problem because the input is an ordered collection and the output needs to preserve that order after rotation. A list provides direct indexing and supports slicing, which makes it straightforward to separate the final k elements from the beginning of the list. I used k % len(values) so that unnecessarily large rotation values are reduced to the equivalent number of rotations.
+
+The time limit shaped my decision because I wanted a solution that could be implemented quickly while still being efficient and easy to understand. Using list slicing allowed me to avoid writing a more complicated loop or manually shifting every element. The solution runs in O(n) time because the slices and concatenation may process all n elements, and it uses O(n) additional space for the resulting list.
+
+Under time pressure, I prioritized correctness, readability, and handling important edge cases instead of attempting an in-place rotation algorithm. An in-place approach could reduce the additional memory usage to O(1), but it would require more logic and create more opportunities for mistakes during a timed challenge. I also added input validation for incorrect data types and negative rotation values, along with tests for empty lists, single-element lists, zero rotations, duplicate values, and rotation values larger than the list length. This gives the solution reasonable robustness without making it unnecessarily complicated.
+
 
 2. Running Total with Reset
 Track a running total of values. If a negative number is added, reset the total to 0.

@@ -13,8 +13,16 @@ Output: False
 """
 
 def has_duplicates(product_ids):
-    # Your implementation here
-    pass
+    # A set is ideal because it stores only unique IDs and provides average O(1)
+    # membership checks and insertion, so the entire collection can be checked in O(n) time.
+    seen = set()
+
+    for product_id in product_ids:
+        if product_id in seen:
+            return True
+        seen.add(product_id)
+
+    return False
 
 
 """
@@ -32,14 +40,18 @@ task_queue.remove_oldest_task() → "Email follow-up"
 
 class TaskQueue:
     def __init__(self):
-        # Your initialization here
-        pass
+        # A deque is designed for queue operations, providing O(1) insertion
+        # at the back and O(1) removal from the front.
+        from collections import deque
+        self.tasks = deque()
 
     def add_task(self, task):
-        pass
+        self.tasks.append(task)
 
     def remove_oldest_task(self):
-        pass
+        if not self.tasks:
+            return None
+        return self.tasks.popleft()
 
 
 """
@@ -57,10 +69,12 @@ tracker.get_unique_count() → 2
 
 class UniqueTracker:
     def __init__(self):
-        pass
+        # A set automatically keeps only unique values, while len() provides
+        # the current count in O(1) time; adding a value is O(1) on average.
+        self.values = set()
 
     def add(self, value):
-        pass
+        self.values.add(value)
 
     def get_unique_count(self):
-        pass
+        return len(self.values)
